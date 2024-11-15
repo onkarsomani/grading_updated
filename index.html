@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .scheme {
+        color: rgb(19, 19, 102);
+        text-decoration: solid;
+        background-color: whitesmoke;
+    }
+
+    hr.rounded {
+        border-top: 20px solid grey;
+        border-radius: 20px;
+    }
+
+    .instr {
+        color: rgb(127, 25, 25);
+        text-align: left;
+        text-decoration: solid;
+    }
+
+    .download {
+        color: rgb(42, 42, 160);
+        text-decoration: underline;
+    }
+
+    .p1 {
+        padding-left: 100px;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 500px;
+        height: 200px;
+        max-width: 500px;
+        max-height: 200px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    button {
+        margin-top: 10px;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 100px 0;
+            /* Adjust the first value to control the spacing between columns */
+        }
+    </style>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <a href="https://universe.bits-pilani.ac.in/Goa/">
+                    <img src="bits.jpeg" style="
+                object-fit: contain;
+                width: 400px;
+                height: 100px;
+                /* padding-left: 100px; */
+              " />
+                </a>
+            </div>
+            <div class="col">
+                <img src="bits1.jpeg" style="
+              object-fit: contain;
+              width: 400px;
+              height: 100px;
+              /* padding-left: 100px; */
+            " />
+            </div>
+        </div>
+    </div>
+</head>
+
+<body>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message"></p>
+            <button id="proceedBtn">Proceed</button>
+            <button id="stayBtn">Stay</button>
+        </div>
+    </div>
+
+    <hr class="rounded" />
+
+    <!-- // instructions -->
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <center>
+                    <div class="card" style="width: 90%">
+                        <div class="card-body">
+                            <h5 class="scheme">Instructions</h5>
+                            <p class="instr">
+                                1) This software works in Mozilla Firefox, Google Chrome and
+                                Internet Explorer.
+                            </p>
+                            <p class="instr">
+                                2) File should be in Microsoft Excel format with an extension
+                                of ".xls" , ".xlsx" or ".csv"
+                            </p>
+                            <p class="instr">
+                                3) Excel File 1st row will not be used for calculations, Do
+                                NOT put marks in it. You can have text labels like:
+                                IDNo,Student Name,Total_Marks .(Refer sample file).
+                            </p>
+                            <p class="instr">
+                                4) Title of one of the column in the first row must be
+                                "Total_Marks" and it should be written exactly like this,
+                                matching the uppercase and lowercase letters. This column will
+                                be used for grading based on the final marks.
+                            </p>
+                            <p class="instr">
+                                5) Excel File Last column should have only INTEGER values.
+                                Decimal, character values, empty cell values are NOT allowed.
+                            </p>
+                            <p class="instr">
+                                6) Students with zero marks should not be included for
+                                histogram plotting because these students will either be
+                                "NC/I/W/RC/DP/GA" cases
+                            </p>
+                            <p class="instr">
+                                7) Please note that this software is just a virtual screen. No
+                                data or Histogram is stored anywhere. Ensure that you download
+                                the Histogram and verify the grades cut offs, number of
+                                students in each grade and grade allotted before you submit.
+                            </p>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="User_Manual.pdf" download="User_Manual.pdf" class="download">
+                                            <center>
+                                                <h4 style="font-size: 18px; text-align: center">
+                                                    Download User Manual
+                                                </h4>
+                                            </center>
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="Sample_Data_File.xlsx" download="Sample_Data_File.xlsx"
+                                            class="download">
+                                            <h4 style="font-size: 18px; text-align: center">
+                                                Download Template File
+                                            </h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </center>
+            </div>
+
+            <!-- taking user inputs all cells need to be filled -->
+
+            <div class="col">
+                <center>
+                    <div class="card" style="width: 90%">
+                        <div class="card-body">
+                            <h5 class="scheme">Course Details</h5>
+
+                            <form>
+                                <div class="row">
+                                    <div style="padding: 5px"></div>
+                                    <div class="col-2" style="padding: 10px">
+                                        <label for="input1" class="col-sm-2 col-form-label" style="
+                          font-weight: bold;
+                          text-align: left;
+                          color: grey;
+                          text-decoration: double;
+                          font-size: 13px;
+                          white-space: nowrap;
+                        ">Instructor Name
+                                        </label>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="col-sm-9" style="padding-left: 10px">
+                                            <input type="text" class="form-control" id="input1" />
+                                        </div>
+                                    </div>
+                                    <div class="w-500"></div>
+
+                                    <div class="col-2" style="padding: 10px">
+                                        <label for="input2" class="col-sm-2 col-form-label" style="
+                          font-weight: bold;
+                          text-align: left;
+                          color: grey;
+                          text-decoration: double;
+                          font-size: 13px;
+                          white-space: nowrap;
+                        ">Course Code
+                                        </label>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="col-sm-9" style="padding-left: 10px">
+                                            <input type="text" class="form-control" id="input2" />
+                                        </div>
+                                    </div>
+                                    <div class="w-500"></div>
+
+                                    <div class="col-2" style="padding: 10px">
+                                        <label for="input3" class="col-sm-2 col-form-label" style="
+                          font-weight: bold;
+                          text-align: left;
+                          color: grey;
+                          text-decoration: double;
+                          font-size: 13px;
+                          white-space: nowrap;
+                        ">Course Name
+                                        </label>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="col-sm-9" style="padding-left: 10px">
+                                            <input type="text" class="form-control" id="input3" />
+                                        </div>
+                                    </div>
+                                    <div class="w-500"></div>
+
+                                    <div class="col-2" style="padding: 10px">
+                                        <label for="input4" class="col-sm-2 col-form-label" style="
+                          font-weight: bold;
+                          text-align: left;
+                          color: grey;
+                          text-decoration: double;
+                          font-size: 13px;
+                          white-space: nowrap;
+                        ">Course Total
+                                        </label>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="col-sm-9" style="padding-left: 10px">
+                                            <input type="number" class="form-control" id="input4" />
+                                        </div>
+                                    </div>
+                                    <div class="w-500"></div>
+
+                                    <div style="
+                        font-weight: bold;
+                        text-align: left;
+                        color: grey;
+                        text-decoration: double;
+                        font-size: 13px;
+                        white-space: nowrap;
+                        padding-bottom: 10px;
+                        padding-left: 30px;
+                        padding-top: 10px;
+                      ">
+                                        only for first year courses : minimum passing criteria
+                                    </div>
+
+                                    <div class="temp" style="display: flex">
+                                        <div class="col-2" style="padding: 10px; padding-left: 0px">
+                                            <label for="input6" class="col-sm-2 col-form-label" style="
+                            font-weight: bold;
+                            text-align: left;
+                            color: grey;
+                            text-decoration: double;
+                            font-size: 13px;
+                            white-space: nowrap;
+                          ">% marks
+                                            </label>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="col-sm-9" style="padding-left: 10px">
+                                                <input type="number" class="form-control" id="input5" />
+                                            </div>
+                                        </div>
+                                        <div class="col-2" style="padding: 10px; padding-left: 0px">
+                                            <label for="input6" class="col-sm-2 col-form-label" style="
+                            font-weight: bold;
+                            text-align: left;
+                            color: grey;
+                            text-decoration: double;
+                            font-size: 13px;
+                            white-space: nowrap;
+                          ">
+                                                of top
+                                            </label>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="col-sm-9" style="padding-left: 10px">
+                                                <input type="number" class="form-control" id="input7" />
+                                            </div>
+                                        </div>
+                                        <div class="col-2" style="padding: 10px; padding-left: 0px">
+                                            <label for="input6" class="col-sm-2 col-form-label" style="
+                            font-weight: bold;
+                            text-align: left;
+                            color: grey;
+                            text-decoration: double;
+                            font-size: 13px;
+                            white-space: nowrap;
+                          ">
+                                                students
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="w-500"></div>
+
+                                    <div class="col-2" style="padding: 10px">
+                                        <label for="input6" class="col-sm-2 col-form-label" style="
+                          font-weight: bold;
+                          text-align: left;
+                          color: grey;
+                          text-decoration: double;
+                          font-size: 13px;
+                          white-space: nowrap;
+                        ">% of median marks
+                                        </label>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="col-sm-9" style="padding-left: 10px">
+                                            <input type="number" class="form-control" id="input6" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2" style="padding: 10px">
+                                        <label for="fileInput" class="col-sm-2 col-form-label" style="
+                          font-weight: bold;
+                          text-align: left;
+                          color: grey;
+                          text-decoration: double;
+                          font-size: 13px;
+                          white-space: nowrap;
+                        ">Upload File
+                                        </label>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="form-group">
+                                            <input type="file" class="form-control-file" id="fileInput"
+                                                accept=".xls, .xlsx, .csv" />
+                                        </div>
+                                    </div>
+                                    <div class="w-500"></div>
+                                </div>
+                            </form>
+
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-primary" onclick="readFile()">
+                                        Read Excel / CSV Data
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-primary" id="drawHistogramButton" disabled
+                                        onclick="redirectToHistogramPage()">
+                                        Draw Histogram
+                                    </button>
+                                </div>
+                                <div class="w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </center>
+
+                <!-- including external libraries -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+                <script>
+
+                    // additional cutoffs for 1st year courses
+                    var cutoff1 = 0;
+                    var cutoff2 = 0;
+                    var countcut = 0.1;
+
+                    function readFile() {
+                        // Get the file input element
+                        const fileInput = document.getElementById("fileInput");
+
+                        // Check if a file is selected
+                        if (fileInput.files.length === 0) {
+                            alert("Please select a file.");
+                            return;
+                        }
+
+                        // Check if specific input fields are not empty
+                        const input1 = document.getElementById("input1").value.trim();
+                        const input2 = document.getElementById("input2").value.trim();
+                        const input3 = document.getElementById("input3").value.trim();
+                        const input4 = document.getElementById("input4").value.trim();
+
+                        if (
+                            input1 === "" ||
+                            input2 === "" ||
+                            input3 === "" ||
+                            input4 === ""
+                        ) {
+                            alert("Please fill in all required input fields.");
+                            return;
+                        }
+
+                        if (!isValidInteger(input4)) {
+                            alert('Please enter a valid integer for "Course Total".');
+                            return;
+                        }
+
+                        // Get the selected file
+                        const file = fileInput.files[0];
+
+
+                        // logic to read the file for both csv and excel
+
+                        // Check the file extension
+                        const fileName = file.name.toLowerCase();
+                        if (
+                            fileName.endsWith(".xls") ||
+                            fileName.endsWith(".xlsx") ||
+                            fileName.endsWith(".csv")
+                        ) {
+                            // Read and display file data
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const data = e.target.result;
+                                if (fileName.endsWith(".csv")) {
+                                    // Process CSV data (you can use a CSV parsing library)
+                                    const lines = data.split("\n");
+                                    const tableData = lines
+                                        .map((line) => {
+                                            const columns = line.split(",");
+                                            return `<tr class="table-row">${columns
+                                                .map((column) => `<td>${column}</td>`)
+                                                .join("")}</tr>`;
+                                        })
+                                        .join("");
+                                    const tableHTML = `<table>${tableData}</table>`;
+                                    document.getElementById("dataDisplay").innerHTML =
+                                        tableHTML;
+
+                                    // Enable the "Draw Histogram" button
+                                    document.getElementById(
+                                        "drawHistogramButton"
+                                    ).disabled = false;
+                                } else {
+                                    // Process Excel (XLS/XLSX) data using SheetJS
+                                    const workbook = XLSX.read(data, { type: "binary" });
+                                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                                    const jsonData = XLSX.utils.sheet_to_json(sheet, {
+                                        header: 1,
+                                    });
+
+                                    // Generate an HTML table from JSON data
+                                    const tableData = jsonData
+                                        .map((row) => {
+                                            return `<tr class="table-row">${row
+                                                .map((cell) => `<td>${cell}</td>`)
+                                                .join("")}</tr>`;
+                                        })
+                                        .join("");
+                                    const tableHTML = `<table>${tableData}</table>`;
+                                    document.getElementById("dataDisplay").innerHTML =
+                                        tableHTML;
+
+                                    // Enable the "Draw Histogram" button
+                                    document.getElementById(
+                                        "drawHistogramButton"
+                                    ).disabled = false;
+                                }
+                            };
+                            reader.readAsBinaryString(file);
+                        } else {
+                            alert(
+                                "Invalid file format. Please select an Excel (XLS/XLSX) or CSV file."
+                            );
+                        }
+                        const courseTotalInput = document.getElementById("input4");
+                        const courseTotal = parseInt(courseTotalInput.value);
+
+                        // Save the course total in local storage
+                        localStorage.setItem("courseTotal", courseTotal);
+
+                        const input1Value = document.getElementById("input1").value;
+                        localStorage.setItem("input1", input1Value);
+
+                        const input2Value = document.getElementById("input2").value;
+
+                        localStorage.setItem("input2", input2Value);
+
+                        cutoff1 = document.getElementById("input5").value;
+                        cutoff2 = document.getElementById("input6").value;
+                        countcut = document.getElementById("input7").value;
+                        console.log(typeof cutoff1);
+                        console.log(cutoff1);
+
+                        if (cutoff1 == "" && cutoff2 == "") {
+                            cutoff1 = parseInt(0);
+                            countcut = parseInt(1);
+                            cutoff2 = parseInt(0);
+                        } else if (cutoff1 == "") {
+                            cutoff1 = parseInt(1e9);
+                            countcut = parseInt(1);
+                        } else if (cutoff2 == "") {
+                            cutoff2 = parseInt(1e9);
+                        }
+                        console.log(cutoff1);
+                        console.log(typeof cutoff1);
+
+                        const input3Value = document.getElementById("input3").value;
+
+                        localStorage.setItem("input3", input3Value);
+                    }
+
+                    function isValidInteger(value) {
+                        return /^\d+$/.test(value);
+                    }
+
+                    const totalMarksArray = [];
+
+                    function csvJSON(csv) {
+                        var lines = csv.split("\n");
+                        var result = [];
+                        var headers = lines[0].split(",");
+
+                        for (var i = 1; i < lines.length; i++) {
+                            var obj = {};
+                            var currentLine = lines[i].split(",");
+
+                            for (var j = 0; j < headers.length; j++) {
+                                obj[headers[j]] = currentLine[j];
+                            }
+
+                            result.push(obj);
+                        }
+
+                        return JSON.stringify(result);
+                    }
+
+                    function redirectToHistogramPage() {
+                        // Get the file input element
+                        const fileInput = document.getElementById("fileInput");
+
+                        // Check if a file is selected
+                        if (fileInput.files.length === 0) {
+                            alert("Please select a file.");
+                            return;
+                        }
+
+                        // Get the selected file
+                        const file = fileInput.files[0];
+
+                        // Check the file extension
+                        const fileName = file.name.toLowerCase();
+
+                        var jsonData, records;
+
+                        if (
+                            fileName.endsWith(".xls") ||
+                            fileName.endsWith(".xlsx") ||
+                            fileName.endsWith(".csv")
+                        ) {
+                            // Read and validate file data
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const data = e.target.result;
+                                let isValidData = true;
+                                var totalMarksArray = [];
+
+                                var alertMessage =
+                                    "These lines are containing non-integral values : ";
+                                var arrmessage;
+                                let otherColumnsArray = [];
+
+                                if (file.name.endsWith(".csv")) {
+                                    let tarr = [];
+                                    Papa.parse(file, {
+                                        header: true,
+                                        dynamicTyping: true,
+                                        complete: function (results) {
+                                            const csvData = results.data;
+                                            var cntt = 0;
+                                            var lastv = 0;
+                                            // console.log(results.meta.fields);
+                                            otherColumnsArray.push(results.meta.fields);
+                                            // records = csvJSON(file);
+                                            for (const row of csvData) {
+                                                if (!Number.isInteger(row["Total_Marks"])) {
+                                                    isValidData = false;
+                                                } else {
+                                                    lastv = cntt;
+                                                }
+                                                cntt += 1;
+                                                if (cntt == 2000) break;
+                                            }
+
+                                            cntt = 0;
+
+                                            for (const row of csvData) {
+                                                if (!Number.isInteger(row["Total_Marks"])) {
+                                                    isValidData = false;
+                                                    tarr.push(cntt + 1);
+                                                    otherColumnsArray.push(Object.values(row));
+                                                } else {
+                                                    totalMarksArray.push(row["Total_Marks"]);
+                                                    otherColumnsArray.push(Object.values(row));
+                                                }
+                                                if (cntt == lastv) break;
+                                                cntt += 1;
+                                            }
+
+                                            // Sort the array in descending order
+                                            const sortedArray = totalMarksArray.sort(
+                                                (a, b) => b - a
+                                            );
+
+                                            // Get the top 5 values
+                                            const top5Values = sortedArray.slice(0, countcut);
+
+                                            // Calculate the average of the top 5 values
+                                            const average =
+                                                top5Values.reduce((sum, value) => sum + value, 0) /
+                                                top5Values.length;
+
+                                            // Calculate the median of the top 5 values
+                                            let median;
+                                            const len = sortedArray.length;
+                                            if (len % 2 === 0) {
+                                                median =
+                                                    (sortedArray[len / 2 - 1] + sortedArray[len / 2]) /
+                                                    2;
+                                            } else {
+                                                median = sortedArray[Math.floor(len / 2)];
+                                            }
+
+                                            var finalcut = Math.min(
+                                                (cutoff1 / 100) * average,
+                                                (cutoff2 / 100) * median
+                                            );
+                                            // console.log(finalcut);
+
+                                            totalMarksArray = totalMarksArray.filter(function (
+                                                mark
+                                            ) {
+                                                return mark >= finalcut;
+                                            });
+
+                                            for (let val of totalMarksArray) {
+                                                console.log(val);
+                                            }
+                                            localStorage.setItem("finalcut", finalcut);
+
+                                            localStorage.setItem(
+                                                "totalMarksArray",
+                                                JSON.stringify(totalMarksArray)
+                                            );
+
+                                            // console.log(otherColumnsArray);
+                                            arrmessage = tarr.join(" ");
+
+                                            localStorage.setItem(
+                                                "records",
+                                                JSON.stringify(otherColumnsArray)
+                                            );
+                                            localStorage.setItem(
+                                                "totalMarksArray",
+                                                JSON.stringify(totalMarksArray)
+                                            );
+
+                                            alertMessage = alertMessage + arrmessage;
+
+                                            // Proceed to the histogram page if the data is valid
+                                            if (isValidData) {
+                                                // Store the 'totalMarksArray' in localStorage for use on the other page
+
+                                                window.location.href = "histogram.html";
+                                            } else {
+                                                // alert(alertMessage + arrmessage);
+                                                document.getElementById("modal-message").textContent =
+                                                    alertMessage;
+
+                                                // Get the modal
+                                                var modal = document.getElementById("myModal");
+
+                                                // Get the <span> element that closes the modal
+                                                var span =
+                                                    document.getElementsByClassName("close")[0];
+
+                                                // Get the buttons
+                                                var proceedBtn =
+                                                    document.getElementById("proceedBtn");
+                                                var stayBtn = document.getElementById("stayBtn");
+
+                                                // Display the modal
+                                                modal.style.display = "block";
+
+                                                // When the user clicks on <span> (x), close the modal
+                                                span.onclick = function () {
+                                                    modal.style.display = "none";
+                                                };
+
+                                                // When the user clicks anywhere outside of the modal, close it
+                                                window.onclick = function (event) {
+                                                    if (event.target == modal) {
+                                                        modal.style.display = "none";
+                                                    }
+                                                };
+
+                                                // Proceed button clicked
+                                                proceedBtn.onclick = function () {
+                                                    window.location.href = "histogram.html";
+                                                    modal.style.display = "none"; // Close the modal
+                                                };
+
+                                                // Stay button clicked
+                                                stayBtn.onclick = function () {
+                                                    modal.style.display = "none"; // Close the modal
+                                                };
+                                            }
+                                        },
+                                    });
+                                } else {
+                                    // Process Excel (XLS/XLSX) data using SheetJS
+                                    const workbook = XLSX.read(data, { type: "binary" });
+                                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+                                    jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                                    records = jsonData.map((row) =>
+                                        row.map((cell) => String(cell))
+                                    );
+
+                                    console.log(records[0]);
+
+                                    // Find the index of the 'Total_Marks' column
+                                    var totalMarksIndex = jsonData[0].indexOf("Total_Marks");
+
+                                    // Check if all values under the 'Total_Marks' column are integers
+                                    let maxval = 1;
+
+                                    for (; maxval < jsonData.length; maxval++) {
+                                        if (jsonData[maxval][totalMarksIndex] == undefined) {
+                                            break;
+                                        }
+                                    }
+
+                                    let j = 0;
+                                    for (j = 0; j < 30; j++) {
+                                        let temp = 1;
+                                        for (; temp < jsonData.length; temp++) {
+                                            if (jsonData[temp][j] == undefined) {
+                                                break;
+                                            }
+                                        }
+
+                                        if (temp > maxval) {
+                                            maxval = temp;
+                                        }
+                                    }
+
+                                    let tarr = [];
+
+                                    var err;
+
+                                    for (let i = 1; i < maxval; i++) {
+                                        if (
+                                            jsonData[i][totalMarksIndex] == "NC" ||
+                                            jsonData[i][totalMarksIndex] == "W"
+                                        ) {
+                                            tarr.push(i);
+                                            isValidData = false;
+                                        } else if (
+                                            !Number.isInteger(
+                                                Number(jsonData[i][totalMarksIndex])
+                                            ) ||
+                                            jsonData[i][totalMarksIndex] === undefined ||
+                                            jsonData[i][totalMarksIndex] === null
+                                        ) {
+                                            tarr.push(i);
+                                            isValidData = false;
+                                        } else {
+                                            // Store the 'Total_Marks' value in the array
+                                            totalMarksArray.push(
+                                                Number(jsonData[i][totalMarksIndex])
+                                            );
+                                        }
+                                    }
+
+                                    for (let val of totalMarksArray) {
+                                        console.log(val);
+                                    }
+
+                                    arrmessage = tarr.join(" ");
+
+                                    localStorage.setItem("records", JSON.stringify(records));
+                                    // console.log(records);
+
+                                    // Sort the array in descending order
+                                    const sortedArray = totalMarksArray.sort((a, b) => b - a);
+
+                                    // Get the top 5 values
+                                    const top5Values = sortedArray.slice(0, countcut);
+
+                                    // Calculate the average of the top 5 values
+                                    const average =
+                                        top5Values.reduce((sum, value) => sum + value, 0) /
+                                        top5Values.length;
+
+                                    // Calculate the median of the top 5 values
+                                    let median;
+                                    const len = sortedArray.length;
+                                    if (len % 2 === 0) {
+                                        median =
+                                            (sortedArray[len / 2 - 1] + sortedArray[len / 2]) / 2;
+                                    } else {
+                                        median = sortedArray[Math.floor(len / 2)];
+                                    }
+                                    console.log(cutoff1);
+                                    console.log(cutoff2);
+                                    console.log(average);
+                                    var finalcut = Math.min(
+                                        (cutoff1 / 100) * average,
+                                        (cutoff2 / 100) * median
+                                    );
+                                    console.log(finalcut);
+
+                                    totalMarksArray = totalMarksArray.filter(function (mark) {
+                                        return mark >= finalcut;
+                                    });
+
+                                    console.log(finalcut);
+                                    localStorage.setItem("finalcut", finalcut);
+
+                                    for (let val of totalMarksArray) {
+                                        console.log(val);
+                                    }
+
+                                    localStorage.setItem(
+                                        "totalMarksArray",
+                                        JSON.stringify(totalMarksArray)
+                                    );
+
+                                    alertMessage = alertMessage + arrmessage;
+
+                                    // Proceed to the histogram page if the data is valid
+                                    if (isValidData) {
+                                        // Store the 'totalMarksArray' in localStorage for use on the other page
+
+                                        window.location.href = "histogram.html";
+                                    } else {
+                                        // alert(alertMessage + arrmessage);
+                                        document.getElementById("modal-message").textContent =
+                                            alertMessage;
+
+                                        // Get the modal
+                                        var modal = document.getElementById("myModal");
+
+                                        // Get the <span> element that closes the modal
+                                        var span = document.getElementsByClassName("close")[0];
+
+                                        // Get the buttons
+                                        var proceedBtn = document.getElementById("proceedBtn");
+                                        var stayBtn = document.getElementById("stayBtn");
+
+                                        // Display the modal
+                                        modal.style.display = "block";
+
+                                        // When the user clicks on <span> (x), close the modal
+                                        span.onclick = function () {
+                                            modal.style.display = "none";
+                                        };
+
+                                        // When the user clicks anywhere outside of the modal, close it
+                                        window.onclick = function (event) {
+                                            if (event.target == modal) {
+                                                modal.style.display = "none";
+                                            }
+                                        };
+
+                                        // Proceed button clicked
+                                        proceedBtn.onclick = function () {
+                                            window.location.href = "histogram.html";
+                                            modal.style.display = "none"; // Close the modal
+                                        };
+
+                                        // Stay button clicked
+                                        stayBtn.onclick = function () {
+                                            modal.style.display = "none"; // Close the modal
+                                        };
+                                    }
+                                }
+                            };
+                            reader.readAsBinaryString(file);
+                        } else {
+                            alert(
+                                "Invalid file format. Please select an Excel (XLS/XLSX) or CSV file."
+                            );
+                        }
+                    }
+
+                    const input4Element = document.getElementById("input4");
+
+                    const input4Value = parseInt(input4Element.value);
+                </script>
+            </div>
+        </div>
+
+        <div id="dataDisplay"></div>
+    </div>
+</body>
+
+<script href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

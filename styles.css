@@ -1,0 +1,504 @@
+/* @import "bourbon@5.*"; */
+
+
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 3000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.container0 {
+  max-width: 3000px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  padding: 50px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+#histogramCanvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* 
+table {
+    border: 1px solid black;
+} */
+
+th {
+
+  border: 1px solid black;
+  height: 50px;
+  width: 50px;
+}
+
+td {
+
+  border: 1px solid black;
+  text-align: center;
+  height: 30px;
+  width: 30px;
+}
+
+
+.headings {
+  font-family: Georgia, serif;
+}
+
+
+
+
+.slider-container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding-left: 45px;
+  padding-right: 10px;
+}
+
+.range-slider {
+  width: 100%;
+  height: 5px;
+  background-color: #ccc;
+  position: relative;
+}
+
+.slider-button {
+  width: 20px;
+  height: 20px;
+  background-color: #2155d9;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  cursor: pointer;
+  transform: translateX(-50%);
+  color: white;
+}
+
+/* Set initial positions */
+.slider-button1 {
+  left: 90%;
+}
+
+.slider-button2 {
+  left: 80%;
+}
+
+.slider-button3 {
+  left: 70%;
+}
+
+.slider-button4 {
+  left: 60%;
+}
+
+.slider-button5 {
+  left: 50%;
+}
+
+.slider-button6 {
+  left: 40%;
+}
+
+.slider-button7 {
+  left: 30%;
+}
+
+.slider-button8 {
+  left: 20%;
+}
+
+.slider-button9 {
+  left: 0%;
+  font-size: 0px;
+  padding-top: 8px;
+  position: relative;
+  width: 0px;
+  height: 0px;
+}
+
+.value-label {
+  position: absolute;
+  top: 25px;
+  transform: translateX(-50%);
+  display: none;
+
+}
+
+.button-22 {
+  align-items: center;
+  appearance: button;
+  background-color: #0276FF;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-family: "RM Neue", sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  padding: 10px 21px;
+  text-align: center;
+  text-transform: none;
+  transition: color .13s ease-in-out, background .13s ease-in-out, opacity .13s ease-in-out, box-shadow .13s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-22:active {
+  background-color: #006AE8;
+}
+
+.button-22:hover {
+  background-color: #1C84FF;
+}
+
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Avenir Next", "Avenir", "Segoe UI", "Lucida Grande", "Helvetica Neue", "Helvetica", "Fira Sans", "Roboto", "Noto", "Droid Sans", "Cantarell", "Oxygen", "Ubuntu", "Franklin Gothic Medium", "Century Gothic", "Liberation Sans", sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+a {
+  color: #26890d;
+}
+
+a:hover,
+a:focus {
+  color: #046a38;
+}
+
+.container {
+  margin: 5% 3%;
+}
+
+@media (min-width: 48em) {
+  .container {
+    margin: 2%;
+  }
+}
+
+@media (min-width: 75em) {
+  .container {
+    margin: 2em auto;
+    max-width: 75em;
+  }
+}
+
+.responsive-table {
+  width: 100%;
+  margin-bottom: 1.5em;
+  border-spacing: 0;
+}
+
+@media (min-width: 48em) {
+  .responsive-table {
+    font-size: 0.9em;
+  }
+}
+
+@media (min-width: 62em) {
+  .responsive-table {
+    font-size: 1em;
+  }
+}
+
+.responsive-table thead {
+  position: absolute;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+@media (min-width: 48em) {
+  .responsive-table thead {
+    position: relative;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: auto;
+  }
+}
+
+.responsive-table thead th {
+  background-color: #3c67dc;
+  border: 1px solid #2a2aa2;
+  font-weight: normal;
+  text-align: center;
+  color: white;
+}
+
+.responsive-table thead th:first-of-type {
+  text-align: left;
+}
+
+.responsive-table tbody,
+.responsive-table tr,
+.responsive-table th,
+.responsive-table td {
+  display: block;
+  padding: 0;
+  text-align: left;
+  white-space: normal;
+}
+
+@media (min-width: 48em) {
+  .responsive-table tr {
+    display: table-row;
+  }
+}
+
+.responsive-table th,
+.responsive-table td {
+  padding: 0.5em;
+  vertical-align: middle;
+}
+
+@media (min-width: 30em) {
+
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.75em 0.5em;
+  }
+}
+
+@media (min-width: 48em) {
+
+  .responsive-table th,
+  .responsive-table td {
+    display: table-cell;
+    padding: 0.5em;
+  }
+}
+
+@media (min-width: 62em) {
+
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.75em 0.5em;
+  }
+}
+
+@media (min-width: 75em) {
+
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.75em;
+  }
+}
+
+.responsive-table caption {
+  margin-bottom: 1em;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (min-width: 48em) {
+  .responsive-table caption {
+    font-size: 1.5em;
+  }
+}
+
+.responsive-table tfoot {
+  font-size: 0.8em;
+  font-style: italic;
+}
+
+@media (min-width: 62em) {
+  .responsive-table tfoot {
+    font-size: 0.9em;
+  }
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody {
+    display: table-row-group;
+  }
+}
+
+.responsive-table tbody tr {
+  margin-bottom: 1em;
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody tr {
+    display: table-row;
+    border-width: 1px;
+  }
+}
+
+.responsive-table tbody tr:last-of-type {
+  margin-bottom: 0;
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}
+
+.responsive-table tbody th[scope=row] {
+  background-color: #26890d;
+  color: white;
+}
+
+@media (min-width: 30em) {
+  .responsive-table tbody th[scope=row] {
+    border-left: 1px solid #86bc25;
+    border-bottom: 1px solid #86bc25;
+  }
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody th[scope=row] {
+    background-color: transparent;
+    color: #000001;
+    text-align: left;
+  }
+}
+
+.responsive-table tbody td {
+  text-align: right;
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody td {
+    border-left: 1px solid #86bc25;
+    border-bottom: 1px solid #86bc25;
+    text-align: center;
+  }
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody td:last-of-type {
+    border-right: 1px solid #86bc25;
+  }
+}
+
+.responsive-table tbody td[data-type=currency] {
+  text-align: right;
+}
+
+.responsive-table tbody td[data-title]:before {
+  content: attr(data-title);
+  float: left;
+  font-size: 0.8em;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+@media (min-width: 30em) {
+  .responsive-table tbody td[data-title]:before {
+    font-size: 0.9em;
+  }
+}
+
+@media (min-width: 48em) {
+  .responsive-table tbody td[data-title]:before {
+    content: none;
+  }
+}
+
+
+
+
+.container11 {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.button-container {
+  width: 50%;
+  padding: 20px;
+}
+
+.button-22 {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-22:hover {
+  background-color: #0056b3;
+}
+
+.merged-cell {
+  border-bottom: none;
+  /* Remove right border of merged cell */
+}
+
+/* table { */
+/* border-collapse: collapse; */
+/* } */
+
+
+
+.container111 {
+  display: flex;
+  height: 300px;
+  /* Total height of the container */
+}
+
+.left-panel,
+.right-panel {
+  flex: 1;
+  /* Each panel takes up equal width initially */
+  /* border: 1px solid black; */
+}
+
+.left-panel {
+  /* Adjust the initial width of the left panel */
+  min-width: 1000px;
+}
+
+.right-panel {
+  /* Adjust the initial width of the right panel */
+  min-width: 100px;
+}

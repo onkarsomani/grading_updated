@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Specifies character encoding and viewport settings -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Page title -->
+    <title>Histogram</title>
+
+    <!-- External CSS and JS libraries -->
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <!-- Main container for content -->
+    <div class="container0">
+      <center>
+        <!-- Header for the course information section -->
+        <div class="headings">
+          <h2>Course information</h2>
+        </div>
+
+        <!-- Table displaying course information -->
+        <table style="width: 90%; padding-bottom: 40px">
+          <tr>
+            <th>course code</th>
+            <th>course name</th>
+            <th>instructor name</th>
+            <th>average score</th>
+          </tr>
+          <tr>
+            <!-- Dynamic values populated with IDs -->
+            <td id="input22"></td>
+            <td id="input33"></td>
+            <td id="input11"></td>
+            <td id="avg"></td>
+          </tr>
+        </table>
+
+        <!-- Table displaying statistics about students -->
+        <table style="width: 90%; padding-left: 50px; padding-right: 50px">
+          <tr>
+            <th>students considered for grading : <b id="tottt"></b></th>
+            <th>students above average : <b id="abvav"></b></th>
+            <th>students below average : <b id="belav"></b></th>
+            <th>MGPV : <b id="mg"></b></th>
+          </tr>
+        </table>
+      </center>
+
+      <!-- Histogram section -->
+      <div class="container">
+        <h1>Histogram</h1>
+        <!-- Canvas element for rendering the histogram -->
+        <canvas id="histogramCanvas" width="1600" height="500"></canvas>
+        <!-- Display area for cursor position -->
+        <div
+          id="positionDisplayy"
+          style="
+            font-size: 12px;
+            margin-top: 20px;
+            color: black;
+            padding-bottom: 30px;
+          "
+        ></div>
+
+        <!-- Slider container for grade cutoffs -->
+        <div class="slider-container">
+          <div class="range-slider" id="range-slider">
+            <!-- Individual grade sliders -->
+            <div class="slider-button slider-button1" id="A">
+              <center>A</center>
+            </div>
+            <div class="slider-button slider-button2" id="A-">
+              <center>A-</center>
+            </div>
+            <div class="slider-button slider-button3" id="B">
+              <center>B</center>
+            </div>
+            <div class="slider-button slider-button4" id="B-">
+              <center>B-</center>
+            </div>
+            <div class="slider-button slider-button5" id="C">
+              <center>C</center>
+            </div>
+            <div class="slider-button slider-button6" id="C-">
+              <center>C-</center>
+            </div>
+            <div class="slider-button slider-button7" id="D">
+              <center>D</center>
+            </div>
+            <div class="slider-button slider-button8" id="E">
+              <center>E</center>
+            </div>
+            <div class="slider-button slider-button9" id="NC">
+              <center>NC</center>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade description and additional stats -->
+      <center>
+        <caption>
+          <h3>Grade Description</h3>
+        </caption>
+        <div class="container" style="height: 300px; width: 800px">
+          <!-- Grade table -->
+          <div style="display: flex">
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 200px">Description</th>
+                    <th scope="col">E</th>
+                    <th scope="col">D</th>
+                    <th scope="col">C-</th>
+                    <th scope="col">C</th>
+                    <th scope="col">B-</th>
+                    <th scope="col">B</th>
+                    <th scope="col">A-</th>
+                    <th scope="col">A</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <td colspan="8">
+                      For proper print size after clicking on get printout button, go to more settings, select scale to customized, and set value to 75
+                    </td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr>
+                    <!-- Grade cutoffs -->
+                    <th scope="row">Grade Cut-Offs</th>
+                    <td id="ecut"></td>
+                    <td id="dcut"></td>
+                    <td id="c-cut"></td>
+                    <td id="ccut"></td>
+                    <td id="b-cut"></td>
+                    <td id="bcut"></td>
+                    <td id="a-cut"></td>
+                    <td id="acut"></td>
+                  </tr>
+                  <tr>
+                    <!-- Student counts per grade -->
+                    <th scope="row">Student count per grade</th>
+                    <td id="ecnt"></td>
+                    <td id="dcnt"></td>
+                    <td id="c-cnt"></td>
+                    <td id="ccnt"></td>
+                    <td id="b-cnt"></td>
+                    <td id="bcnt"></td>
+                    <td id="a-cnt"></td>
+                    <td id="acnt"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- MGPV Table -->
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 100px">MGPV</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th id="mgppp" style="height: 100px"></th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Buttons for printing and downloading CSV -->
+          <div class="container11">
+            <div class="button-container">
+              <button
+                class="button-22"
+                role="button"
+                onclick="window.print();return false;"
+              >
+                Get Printout
+              </button>
+            </div>
+            <div class="button-container">
+              <button class="button-22" role="button" id="downloadButton">
+                Download CSV
+              </button>
+            </div>
+          </div>
+        </div>
+      </center>
+    </div>
+
+    <!-- External JavaScript files -->
+    <script src="utils.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Optional Bootstrap script -->
+    <script
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+  </body>
+</html>
